@@ -181,7 +181,7 @@ static int max17048_get_config(struct i2c_client *client)
 		dev_err(&client->dev, "%s: err %d\n", __func__, config);
 		return config;
 	} else {
-		printk(KERN_ERR "%s : config = 0x%x\n", __func__, config);
+		pr_debug("%s : config = 0x%x\n", __func__, config);
 		chip->config = config;
 		return 0;
 	}
@@ -197,7 +197,7 @@ static int max17048_get_status(struct i2c_client *client)
 		dev_err(&client->dev, "%s: err %d\n", __func__, status);
 		return status;
 	} else {
-		printk(KERN_ERR "%s : status = 0x%x\n", __func__, status);
+		pr_debug("%s : status = 0x%x\n", __func__, status);
 		chip->status = status;
 		return 0;
 	}
@@ -550,7 +550,7 @@ static void max17048_work(struct work_struct *work)
 	max17048_get_vcell(chip->client);
 	max17048_get_soc(chip->client);
 
-	printk(KERN_ERR "%s : Raw SOC : 0x%x / vcell : 0x%x\n",
+	pr_debug("%s : Raw SOC : 0x%x / vcell : 0x%x\n",
 		__func__, chip->soc, chip->vcell);
 
 #ifdef CONFIG_LGE_PM
@@ -560,7 +560,7 @@ static void max17048_work(struct work_struct *work)
 		chip->lasttime_soc = chip->soc;
 		chip->lasttime_capacity_level = chip->capacity_level;
 
-		printk(KERN_ERR "%s : Reported Capacity : %d / voltage : %d\n",
+		pr_debug("%s : Reported Capacity : %d / voltage : %d\n",
 				__func__, chip->capacity_level, chip->voltage);
 
 		if (!chip->batt_psy) {
@@ -642,7 +642,7 @@ psy_error:
 static irqreturn_t max17048_interrupt_handler(int irq, void *data)
 {
 	struct max17048_chip *chip = data;
-	printk(KERN_ERR "%s : MAX17048 interupt occured\n", __func__);
+	pr_debug("%s : MAX17048 interupt occured\n", __func__);
 
 	if (chip == NULL) {
 		printk(KERN_INFO "%s : called before init.\n", __func__);
@@ -659,7 +659,7 @@ static int max17048_clear_interrupt(struct i2c_client *client)
 {
 	struct max17048_chip *chip = i2c_get_clientdata(client);
 	int ret;
-	printk(KERN_INFO "%s.\n", __func__);
+	pr_debug("%s.\n", __func__);
 	if (chip == NULL)
 		return -ENODEV;
 
@@ -849,7 +849,7 @@ int max17048_set_rcomp_by_temperature(struct i2c_client *client)
 	else if (new_rcomp < 0)
 		new_rcomp = 0;
 
-	pr_err("%s : temp = %d, pre_rcomp = 0x%02X -> new_rcomp = 0x%02X\n"
+	pr_debug("%s : temp = %d, pre_rcomp = 0x%02X -> new_rcomp = 0x%02X\n"
 		, __func__ , temp, pre_rcomp, new_rcomp);
 
 	/* Write RCOMP */

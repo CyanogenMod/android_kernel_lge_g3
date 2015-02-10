@@ -1477,7 +1477,7 @@ void xo_therm_logging(void)
 		if (rc)
 			pr_err("VADC read error with %d\n", rc);
 		else {
-			printk(KERN_INFO "[XO_THERM] Result:%lld Raw:%d\n",
+			pr_debug("[XO_THERM] Result:%lld Raw:%d\n",
 					tmp.physical, tmp.adc_code);
 
 #ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4

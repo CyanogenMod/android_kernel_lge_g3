@@ -518,7 +518,7 @@ static void bq24296_reginfo(struct bq24296_chip *chip)
 		bq24296_read_reg(chip->client,
 			bq24296_debug_regs[i].reg, &val[i]);
 
-	pr_info("0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X\n",
+	pr_debug("0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X\n",
 		val[0], val[1], val[2], val[3], val[4],
 		val[5], val[6], val[7], val[8], val[9]);
 }
@@ -731,7 +731,7 @@ static int bq24296_set_ibat_max(struct bq24296_chip *chip, int ma)
 	set_ibat = reg_val * IBAT_STEP_MA + IBAT_MIN_MA;
 	reg_val = reg_val << 2;
 	chip->set_chg_current_ma = set_ibat;
-	pr_info("req_ibat = %d set_ibat = %d reg_val = 0x%02x\n",
+	pr_debug("req_ibat = %d set_ibat = %d reg_val = 0x%02x\n",
 				ma, set_ibat, reg_val);
 
 	return bq24296_masked_write(chip->client, BQ02_CHARGE_CUR_CONT_REG,
@@ -1108,7 +1108,7 @@ static int bq24296_enable_charging(struct bq24296_chip *chip, bool enable)
 	u8 val = (u8)(!!enable << CHG_ENABLE_SHIFT);
 	NULL_CHECK(chip, -EINVAL);
 
-	pr_info("enable=%d\n", enable);
+	pr_debug("enable=%d\n", enable);
 
 	if (chip->chg_timeout) {
 		pr_err("charging timeout state, never enabel charging\n");
@@ -2014,7 +2014,7 @@ static int bq24296_batt_power_set_property(struct power_supply *psy,
 		bq24296_set_input_i_limit(chip, vzw_max_lmt);
 		/* charging current */
 		bq24296_set_adjust_ibat(chip, vzw_cc);
-		pr_info("\n\nadjust charging current of slow charging : 400mA\n\n");
+		pr_debug("\n\nadjust charging current of slow charging : 400mA\n\n");
 		power_supply_changed(&chip->batt_psy);
 
 		#undef vzw_max_lmt
@@ -2883,7 +2883,7 @@ static int bq24296_set_adjust_ibat(struct bq24296_chip *chip, int ma)
 		bq24296_set_ibat_max(chip, ma);
 		bq24296_force_ichg_decrease(chip, 0);
 	}
-	pr_info("charging current limit=%d\n", ma);
+	pr_debug("charging current limit=%d\n", ma);
 	return 0;
 }
 
@@ -3044,7 +3044,7 @@ static void bq24296_monitor_batt_temp(struct work_struct *work)
 	}
 
 #endif
-	pr_info("thermal-engine set req.chg_current_ma = %d, req.chg_current_te = %d\n",
+	pr_debug("thermal-engine set req.chg_current_ma = %d, req.chg_current_te = %d\n",
 		req.chg_current_ma, req.chg_current_te);
 #endif
 
@@ -3085,7 +3085,7 @@ static void bq24296_monitor_batt_temp(struct work_struct *work)
 			chip->otp_ibat_current = res.dc_current;
 		}
 	}
-	pr_info(" otp_ibat_current=%d\n", chip->otp_ibat_current);
+	pr_debug(" otp_ibat_current=%d\n", chip->otp_ibat_current);
 	bq24296_set_adjust_ibat(chip, chip->chg_current_ma);
 	if (chip->pseudo_ui_chg ^ res.pseudo_chg_ui) {
 		is_changed = true;

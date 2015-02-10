@@ -424,14 +424,14 @@ static int pm_power_get_event_property_wireless(struct power_supply *psy,
 	case POWER_SUPPLY_PROP_WIRELESS_ONLINE:
 		if (likely(chip)) {
 			val->intval = is_wireless_charger_plugged_internal(chip);
-			pr_info("%s : POWER_SUPPLY_PROP_WIRELESS_ONLINE :%d\n",
+			pr_debug("%s : POWER_SUPPLY_PROP_WIRELESS_ONLINE :%d\n",
 				__func__, val->intval);
 		}
 		break;
 #ifdef CONFIG_LGE_THERMALE_CHG_CONTROL_FOR_WLC
 	case POWER_SUPPLY_PROP_WIRELESS_THERMAL_MITIGATION:
 		val->intval = wlc_thermal_mitigation;
-		pr_info("%s : POWER_SUPPLY_PROP_WIRELESS_THERMAL_MITIGATION : %d\n",
+		pr_debug("%s : POWER_SUPPLY_PROP_WIRELESS_THERMAL_MITIGATION : %d\n",
 			__func__, val->intval);
 		break;
 #endif
