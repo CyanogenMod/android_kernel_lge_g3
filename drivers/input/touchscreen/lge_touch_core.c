@@ -59,7 +59,7 @@ int quick_cover_status = 0;
 extern int boot_mode;
 extern int mfts_mode;
 static int factory_mode = 0;
-static int lpwg_status = 0;
+static int lpwg_status = 1;
 
 struct timeval t_ex_debug[EX_PROFILE_MAX];
 bool ghost_detection = 0;
