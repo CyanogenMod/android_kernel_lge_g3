@@ -692,7 +692,7 @@ static const struct i2c_device_id pn544_id[] = {
     { }
 };
 
-#if defined(CONFIG_LGE_NFC_PN547) || defined(CONFIG_LGE_NFC_PN547_C2)
+#ifdef CONFIG_LGE_NFC_PN547
 static struct of_device_id pn547_match_table[] = {
     { .compatible = "NXP,pn547",},
     { },
