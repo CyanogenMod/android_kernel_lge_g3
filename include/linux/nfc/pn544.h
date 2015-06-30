@@ -17,7 +17,7 @@
  *
  */
 
-#ifdef CONFIG_LGE_NFC_PN547_C2
+#ifndef PN544_SET_PWR
 #ifndef _PN547_LGE_H_
 #define _PN547_LGE_H_
 
