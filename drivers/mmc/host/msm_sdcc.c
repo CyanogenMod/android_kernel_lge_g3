@@ -84,6 +84,13 @@ static void msmsdcc_dbg_createhost(struct msmsdcc_host *);
 static struct dentry *debugfs_dir;
 static int  msmsdcc_dbg_init(void);
 #endif
+#ifdef CONFIG_BCMDHD
+#define MMC_SDCC_CONTROLLER_INDEX_BCMDHD 2
+
+extern void bcm_wifi_req_dma_qos(int vote);
+extern int wcf_status_register(void (*cb)(int card_present, void *dev), void *dev);
+extern unsigned int wcf_status(struct device *);
+#endif
 
 static int msmsdcc_prep_xfer(struct msmsdcc_host *host, struct mmc_data
 			     *data);
@@ -201,6 +208,10 @@ static void msmsdcc_pm_qos_update_latency(struct msmsdcc_host *host, int vote)
 	else
 		pm_qos_update_request(&host->pm_qos_req_dma,
 					PM_QOS_DEFAULT_VALUE);
+#ifdef CONFIG_BCMDHD
+	if (host->mmc && host->mmc->card && mmc_card_sdio(host->mmc->card))
+		bcm_wifi_req_dma_qos(vote);
+#endif
 }
 
 #ifdef CONFIG_MMC_MSM_SPS_SUPPORT
@@ -4302,6 +4313,10 @@ retry:
 			mmc_hostname(mmc), __func__);
 		msmsdcc_dump_sdcc_state(host);
 		rc = -EAGAIN;
+#ifdef CONFIG_BCMDHD
+	if (host->pdev->id == MMC_SDCC_CONTROLLER_INDEX_BCMDHD)
+		rc = 0;
+#endif
 	}
 
 kfree:
@@ -6223,6 +6238,12 @@ msmsdcc_probe(struct platform_device *pdev)
 	 * Setup card detect change
 	 */
 
+#ifdef CONFIG_BCMDHD
+	if (host->pdev->id == MMC_SDCC_CONTROLLER_INDEX_BCMDHD) {
+		plat->register_status_notify = wcf_status_register;
+		plat->status = wcf_status;
+	}
+#endif
 	if (!plat->status_gpio)
 		plat->status_gpio = -ENOENT;
 	if (!plat->wpswitch_gpio)
