@@ -4897,7 +4897,12 @@ static int iris_fops_release(struct file *file)
 	}
 END:
 	if (radio->fm_hdev != NULL)
+	{
 		radio->fm_hdev->close_smd();
+#ifndef MODULE
+		transport_ready = -1;
+#endif
+	}
 	if (retval < 0)
 		FMDERR("Err on disable FM %d\n", retval);
 
