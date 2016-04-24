@@ -1025,7 +1025,7 @@ static irqreturn_t anx7816_cbl_det_isr(int irq, void *data)
 			}
 		}
 	} else {
-		//pr_info_ratelimited("%s %s : irq_enable is false, skip until boot completed.\n", LOG_TAG, __func__);
+		pr_info_ratelimited("%s %s : irq_enable is false, skip until boot completed.\n", LOG_TAG, __func__);
 	}
 	return IRQ_HANDLED;
 }
