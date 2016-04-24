@@ -1012,6 +1012,7 @@ static irqreturn_t anx7816_cbl_det_isr(int irq, void *data)
 				anx7816->slimport_connected = true;
 				pr_info_ratelimited("%s %s : detect cable insertion\n", LOG_TAG, __func__);
 				queue_delayed_work(anx7816->workqueue, &anx7816->work, 0);
+				msleep(50);
 		/*		queue_delayed_work(anx7816->workqueue, &anx7816->dwc3_ref_clk_work, 0); */
 			}
 		} else {
